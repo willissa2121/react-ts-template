@@ -19,28 +19,21 @@ You will also see any lint errors in the console.
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `usage with docker`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+In the terminal with the Dockerfile in the root directory.
+```bash
+docker build . -t <IMAGE_NAME>
+```
+. = runs the dockerfile in the current root directory
+-t = Tags your image.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+After the image has built. 
+```bash
+docker run --name <CONTAINER_NAME> -d -p 3000:3000 <IMAGE_NAME>
+```
+-d = Runs as a detached head, doesnt take over your terminal. 
+-p = maps the external port available to your server/browswer to the internal port. In your case, the second port will always be 3000.
+--name = adds a pliantext name for the container that will host the image. If you remove the --name flag a random container name will be generated
