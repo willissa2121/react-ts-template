@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import "./App.css";
 import TextLine, { ITextLineProps } from "./TextLine";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -62,20 +62,27 @@ const App: React.FC = () => {
         color={"red"}
         line={"this is a line"}
         isHidden={true}
-        number={69}
+        number={250}
       />
+      <br />
 
-      {/* BUT WE CAN DO IT DYNAMICALLY TOO! Check out the power of JSX. Javascript interpolated with HTML */}
-      {/* This is the equivalent to a for loop, each "item" is the current iteration */}
-      {/* I would Highly recommend reading all ES6 array method helpers */}
+      {/* BUT WE CAN DO IT DYNAMICALLY TOO! Check out the power of JSX. Javascript interpolated with HTML
+       * This is the equivalent to a for loop, each "item" is the current iteration
+       * I would Highly recommend reading all ES6 array method helpers
+       * We can only return one element, and since we want to render the texline and the br
+       * We have to wrap both in a Fragment, and return the single Fragment element instead
+       */}
       {arrayOfProps.map((item) => {
         return (
-          <TextLine
-            color={item.color}
-            line={item.line}
-            isHidden={item.isHidden}
-            number={item.number}
-          />
+          <Fragment>
+            <TextLine
+              color={item.color}
+              line={item.line}
+              isHidden={item.isHidden}
+              number={item.number}
+            />
+            <br />
+          </Fragment>
         );
       })}
       {/* Looks like default elements have built in methods, I wonder what else... */}

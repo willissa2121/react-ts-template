@@ -20,21 +20,12 @@ const TestLine: React.FC<ITextLineProps> = (props) => {
    * Common elements are <div> and <Fragment>
    */
   return (
-    <div
-      className="App"
-      style={{
-        width: "0 auto",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        maxWidth: "100%",
-      }}
-    >
+    <div className="App">
       {/* By using brackets, I can use a JS variable in HTML! look below */}
       <p style={{ color: color }}>{line}</p>
 
-      {/* Object names can map to variable names, so the above p can also be  */}
-      <p style={{ color }}>{line}</p>
+      {/* Object names can map to variable names, so the above p can also be*/}
+      <p style={{ color }}>{`Value interpolation into a string: ${line}`}</p>
 
       <p style={{ color }}>{number}</p>
 
