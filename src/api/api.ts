@@ -1,6 +1,6 @@
 // You may notice this file is named ts instead of tsx. That is becasue no HTML is returned or rendered here.
 
-import axios from 'axios';
+import axios from "axios";
 
 class API {
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor
@@ -10,8 +10,8 @@ class API {
   url = `http://localhost:${this.port}`;
   axiosConfig = {
     headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
     },
   };
 
@@ -19,11 +19,11 @@ class API {
   get = async (route: string) => {
     return new Promise((res, rej) => {
       axios
-        .get(`${this.url}/api/${route}`, this.axiosConfig)
-        .then((data) => {
+        .get(`${this.url}/${route}`, this.axiosConfig)
+        .then((data: any) => {
           res(data);
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           rej(err);
         });
     });
@@ -32,11 +32,11 @@ class API {
   update = async (route: string, body: any) => {
     return new Promise((res, rej) => {
       axios
-        .put(`${this.url}/api/${route}`, body, this.axiosConfig)
-        .then((data) => {
+        .put(`${this.url}/${route}`, body, this.axiosConfig)
+        .then((data: any) => {
           res(data);
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           rej(err);
         });
     });
@@ -45,11 +45,11 @@ class API {
   post = async (route: string, body: any = {}) => {
     return new Promise((res, rej) => {
       axios
-        .post(`${this.url}/api/${route}`, body, this.axiosConfig)
-        .then((data) => {
+        .post(`${this.url}/${route}`, body, this.axiosConfig)
+        .then((data: any) => {
           res(data);
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           rej(err);
         });
     });
@@ -58,11 +58,11 @@ class API {
   delete = async (route: string, body?: any) => {
     return new Promise((res, rej) => {
       axios
-        .delete(`${this.url}/api/${route}/${body.id}`, this.axiosConfig)
-        .then((data) => {
+        .delete(`${this.url}/${route}/${body.id}`, this.axiosConfig)
+        .then((data: any) => {
           res(data);
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           rej(err);
         });
     });
