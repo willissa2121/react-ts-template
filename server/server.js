@@ -8,9 +8,9 @@ app.use(cors());
 app.get("/", (req, res) => {
   setTimeout(() => {
     res.send({
-      data: { line: "line-1", color: "green", isHidden: false, number: 50 },
+      data: { line: "line-from-server", color: "green", isHidden: false, number: 1000 },
     });
-  }, 2000);
+  }, 5000);
 });
 
 app.listen(port, () => {

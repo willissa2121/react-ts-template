@@ -1,8 +1,10 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import "./App.css";
 import TextLine, { ITextLineProps } from "./TextLine";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { api } from "./api/api";
+import Spinner from "react-spinner-material";
+import { isTemplateExpression } from "typescript";
 
 /**  A functional component, using beautiful es6 arrow function syntax
  * It is strictly typed as React.FC, which means a fucntional component
@@ -26,6 +28,8 @@ const App: React.FC = () => {
   /** Declare this in each component that you want to access state in. This creates a context here.*/
   const queryClient = useQueryClient();
 
+  const [localState, setLocalState] = useState<ITextLineProps>();
+
   /** This is your initial state get. You will use this to initially fetch data from your API and setup a cache line named 'cache-line'*/
 
   const { isLoading, data, isSuccess } = useQuery(
@@ -48,9 +52,21 @@ const App: React.FC = () => {
     onSettled: () => {},
   });
 
+  /**
+   * A useEffect function. This is a function that takes in two parameters, a function and an array
+   * The function parameter is the function to execute each time the useEffect is triggered
+   * The array is a dependency array. Each time one of the variables in the dependency array updates
+   * The function passed in as a parameter triggers again.
+   * This is an excellent way to set state that you are waiting on from an HTTP request.
+   * The browser will render before the data is returned, so useEffect is necessary to update the value from undefined
+   */
   useEffect(() => {
-    console.log(data)
-  }, [data]);
+    if (data !== undefined && !isLoading) {
+      console.log(data);
+      const res = data as any;
+      setLocalState(res.data.data as ITextLineProps);
+    }
+  }, [data, isLoading]);
 
   const onClick = () => {
     /** Invoking the post request, which will reset cache line once completed */
@@ -86,14 +102,33 @@ const App: React.FC = () => {
           </Fragment>
         );
       })}
-      {/* Looks like default elements have built in methods, I wonder what else... */}
-      <button
-        onClick={() => {
-          onClick();
-        }}
-      >
-        {"Click Me"}
-      </button>
+      {/**
+       * This is a conditional rendering. The spinner will show while we wait for data from the HTTP request
+       * Once the data is done loading, we will show the local state we set the data into
+       * We wait until the load is done to make sure the local state is not unedefined
+       * The page renders faster than data is sent from the server.
+       * The ? indicates I am asserting the value may be undefined. Typescript can detect that localstate may have a null value
+       * Due to the conditional, the code will only execute if localstate is not defined, so this will pass checks.
+       */}
+      {localState === undefined ? (
+        <Fragment>
+          <p>
+            This is the content we see while we wait for the HTTP request from
+            the server
+          </p>
+          <Spinner visible={true} />
+        </Fragment>
+      ) : (
+        <Fragment>
+          {console.log(localState)}
+          <TextLine
+            color={localState?.color}
+            line={localState?.line}
+            number={localState?.number}
+            isHidden={localState?.isHidden}
+          />
+        </Fragment>
+      )}
     </div>
   );
 };
