@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import "./App.css";
 import TextLine, { ITextLineProps } from "./TextLine";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -30,26 +30,27 @@ const App: React.FC = () => {
 
   const { isLoading, data, isSuccess } = useQuery(
     "cache-line",
-    () => api.get("<some-route-here>"),
+    () => api.get(""),
     {
       refetchOnWindowFocus: false,
     }
   );
 
   /**A sample mutation, this is using a post route. It will accept an object to pass as the body parameter (this one is an empty object) */
-  const mutation = useMutation(
-    (data: {}) => api.post("<some-route-here", data),
-    {
-      onSuccess: () => {
-        /** This will invalidte the cache called 'cache line', so the origianl cache setter (the queryMethod on line 30), will run a refetch
-         * This will keep your cache up to date after a succesful or failed post call. */
-        queryClient.invalidateQueries("cache-line");
-      },
-      onError: () => {},
-      onMutate: () => {},
-      onSettled: () => {},
-    }
-  );
+  const mutation = useMutation((data: {}) => api.post("/post", data), {
+    onSuccess: () => {
+      /** This will invalidte the cache called 'cache line', so the origianl cache setter (the queryMethod on line 30), will run a refetch
+       * This will keep your cache up to date after a succesful or failed post call. */
+      queryClient.invalidateQueries("cache-line");
+    },
+    onError: () => {},
+    onMutate: () => {},
+    onSettled: () => {},
+  });
+
+  useEffect(() => {
+    console.log(data)
+  }, [data]);
 
   const onClick = () => {
     /** Invoking the post request, which will reset cache line once completed */
