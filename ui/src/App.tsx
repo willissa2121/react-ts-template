@@ -4,7 +4,6 @@ import TextLine, { ITextLineProps } from "./TextLine";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { api } from "./api/api";
 import Spinner from "react-spinner-material";
-import { isTemplateExpression } from "typescript";
 
 /**  A functional component, using beautiful es6 arrow function syntax
  * It is strictly typed as React.FC, which means a fucntional component
@@ -17,6 +16,9 @@ const arrayOfProps: ITextLineProps[] = [
   { line: "line-3", color: "blue", isHidden: false, number: 70 },
 ];
 
+/**
+ * A single object, as seen by the difference in typing
+ */
 const singleObjectProp: ITextLineProps = {
   line: "line4",
   color: "purple",
@@ -61,12 +63,12 @@ const App: React.FC = () => {
    * The browser will render before the data is returned, so useEffect is necessary to update the value from undefined
    */
   useEffect(() => {
-    if (data !== undefined && !isLoading) {
+    if (data !== undefined && isSuccess && !isLoading) {
       console.log(data);
       const res = data as any;
       setLocalState(res.data.data as ITextLineProps);
     }
-  }, [data, isLoading]);
+  }, [data, isLoading, isSuccess]);
 
   const onClick = () => {
     /** Invoking the post request, which will reset cache line once completed */
